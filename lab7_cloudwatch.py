@@ -4,16 +4,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 def run_performance_test():
-    # Configure Headless Chrome for EC2 environment
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=chrome_options)
-
-    # Measure page load time
     url = "https://example.com"
+
     start_time = time.time()
     driver.get(url)
     end_time = time.time()
@@ -23,8 +21,7 @@ def run_performance_test():
 
     driver.quit()
 
-    # Send metric to CloudWatch using aws configure credentials
-    cloudwatch = boto3.client('cloudwatch')
+    cloudwatch = boto3.client('cloudwatch', region_name='us-east-2')
 
     cloudwatch.put_metric_data(
         Namespace='WebPerformance',
